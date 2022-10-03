@@ -22,20 +22,24 @@ class ProductType extends AbstractType
     {
         $builder->add('name', TextType::class, [
             'label' => 'Nom du produit',
-            'attr' => ['placeholder' => 'Taper le nom du produit']
+            'attr' => ['placeholder' => 'Taper le nom du produit'],
+            'required' => false
         ])
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'Description courte',
-                'attr' => ['placeholder' => 'Taper une description assez courte mais parlante pour le visiteur']
+                'attr' => ['placeholder' => 'Taper une description assez courte mais parlante pour le visiteur'],
+                'required' => false
             ])
             ->add('price', MoneyType::class, [
                 'label' => 'Prix du produit',
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Taper le prix du produit en €'],
-                'divisor' => 100
+                'divisor' => 100,
+                'required' => false
             ])
             ->add('mainPicture', UrlType::class, [
                 'label' => 'Image du produit',
-                'attr' => ['placeholder' => 'Tapez une URL d\'image !']
+                'attr' => ['placeholder' => 'Tapez une URL d\'image !'],
+                'required' => false
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Catégorie',
@@ -48,17 +52,19 @@ class ProductType extends AbstractType
                 }
             ]);
 
+
+        // Transformer une donnée saisie dans le formuliare avant qu'elle ne soit enregistrée à l'inverse, la transformer avant l'affichage
         //$builder->get('price')->addModelTransformer(new CentimesTransformer);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        //$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
 
-            $form = $event->getForm();
+        //$form = $event->getForm();
 
-            /** @var Product */
-            $product = $event->getData();
+        /** @var Product */
+        //$product = $event->getData();
 
-            /* Si, par exemple, nous voulions ne pas modifer la catégorie d'un produit lors d'une modification : */
-            if ($product->getId() === null) {
+        /* Si, par exemple, nous voulions ne pas modifer la catégorie d'un produit lors d'une modification : */
+        /*             if ($product->getId() === null) {
                 $form->add('category', EntityType::class, [
                     'label' => 'Catégorie',
                     'placeholder' => '-- Choisir une catégorie --',
@@ -69,8 +75,8 @@ class ProductType extends AbstractType
                         return strtoupper($category->getName());
                     }
                 ]);
-            }
-        });
+            } */
+        //});
     }
 
     public function configureOptions(OptionsResolver $resolver): void
