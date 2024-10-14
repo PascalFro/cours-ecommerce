@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+
+echo 'options single-request-reopen' >> /etc/resolv.conf
+
+# /usr/sbin/varnishd -a :80 -a localhost:8443,PROXY -p feature=+http2 -f /etc/varnish/default.vcl -s malloc,2g
+# /usr/sbin/varnishd -a :80 -p feature=+http2 -f /etc/varnish/default.vcl -s malloc,2g
+
+# first arg is `-f` or `--some-option`
+# if [ "${1#-}" != "$1" ]; then
+#         set -- apache2-foreground "$@"
+# fi
+
+# exec "$@"
+
+## relance le composer à cause des dépendances de BDD dans les composants
+# composer install
+# composer install --no-scripts --no-interaction --verbose
+
+# var
+# echo "chmod..."
+# chmod -R 755 /var/www/var
+# echo "chown..."
+# chown -R www-data:www-data /var/www/var
+
+# vendor
+#chmod -R 755 /var/www/vendor
+#chown -R www-data:www-data /var/www/vendor
+
+
+LANG="C.UTF-8" exec apache2ctl -D FOREGROUND

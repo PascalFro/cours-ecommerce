@@ -1,21 +1,45 @@
-version: '3'
-
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-13}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
-      POSTGRES_USER: ${POSTGRES_USER:-symfony}
+  www:
+    # image: php:7.4-apache
+    build: ./php
+    container_name: www_docker_cours_ecommerce
+    links:
+      - mysql:mysql
     volumes:
-      - db-data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - "./:/var/www"
+      - "./upload:/var/www/public/upload"
+    ports:
+      - "8090:80"
+    networks:
+      - cours_ecommerce
+
+  mysql:
+    image: mysql
+    container_name: db_docker_cours_ecommerce
+    #restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - cours_ecommerce
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin_docker_cours_ecommerce
+    #restart: always
+    depends_on:
+      - mysql
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: mysql
+    networks:
+      - cours_ecommerce
+
+networks:
+  cours_ecommerce:
+
 
 volumes:
-###> doctrine/doctrine-bundle ###
-  db-data:
-###< doctrine/doctrine-bundle ###
+  mysql:
