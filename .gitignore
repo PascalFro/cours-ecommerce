@@ -9,12 +9,8 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
-<<<<<<< HEAD
 /mysql/
-
-=======
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
->>>>>>> a35296f5f2d4861d8aba8c16cde95a0de0a233f3
